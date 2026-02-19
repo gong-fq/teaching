@@ -1,0 +1,33 @@
+{
+  "name": "english-grammar-platform",
+  "version": "1.0.0",
+  "description": "Professor Gong's Interactive English Grammar Course with DeepSeek AI",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build completed successfully'",
+    "postinstall": "echo 'Dependencies installed'",
+    "dev": "netlify dev"
+  },
+  "keywords": [
+    "english",
+    "grammar",
+    "education",
+    "deepseek"
+  ],
+  "author": "Professor Gong Fengqian",
+  "license": "MIT",
+  "dependencies": {
+    "@netlify/functions": "^2.6.0",
+    "axios": "^1.7.2"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.22.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnog-fg/teaching.git"
+  }
+}

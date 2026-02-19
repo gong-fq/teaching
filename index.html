@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Learning Platform - Professor Gong's Interactive Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c5f7e;
+            --secondary: #e8a445;
+            --accent: #d4654c;
+            --bg-light: #faf8f5;
+            --bg-dark: #1a1a2e;
+            --text-dark: #2d2d2d;
+            --text-light: #f0f0f0;
+            --card-bg: #ffffff;
+            --border-color: #e0d8cc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        body.dark-mode .card {
+            background: #2a2a3e;
+            border-color: #3a3a4e;
+        }
+
+        body.dark-mode .week-item {
+            background: #2a2a3e;
+            border-color: #3a3a4e;
+        }
+
+        body.dark-mode .ai-assistant {
+            background: linear-gradient(135deg, #2a2a3e 0%, #3a3a5e 100%);
+        }
+
+        body.dark-mode .exercise-item {
+            background: #2a2a3e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1a3d54 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(44, 95, 126, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .toggle-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 164, 69, 0.3);
+        }
+
+        .toggle-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 101, 76, 0.4);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 15px 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .tab-btn {
+            background: #2a2a3e;
+            border-color: #3a3a4e;
+            color: var(--text-light);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(44, 95, 126, 0.3);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .week-item {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .week-item:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(44, 95, 126, 0.2);
+        }
+
+        .week-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .week-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        body.dark-mode .week-title {
+            color: var(--secondary);
+        }
+
+        .week-content {
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .ai-assistant {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 10px 40px rgba(44, 95, 126, 0.15);
+        }
+
+        .ai-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .ai-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 95, 126, 0.1);
+        }
+
+        .voice-btn, .send-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .voice-btn {
+            background: var(--accent);
+            color: white;
+        }
+
+        .send-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .voice-btn:hover, .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .ai-response {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            display: none;
+        }
+
+        body.dark-mode .ai-response {
+            background: #1a1a2e;
+        }
+
+        .exercise-container {
+            margin-top: 30px;
+        }
+
+        .exercise-item {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .cloze-sentence {
+            font-size: 1.1em;
+            line-height: 2;
+            margin: 15px 0;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            padding: 0 10px;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .resource-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #1a3d54 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(44, 95, 126, 0.4);
+        }
+
+        .resource-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .resource-desc {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .contact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .contact-details {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+            line-height: 2;
+        }
+
+        .contact-details a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid white;
+            transition: all 0.3s ease;
+        }
+
+        .contact-details a:hover {
+            opacity: 0.8;
+        }
+
+        .speak-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .speak-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        .bilingual-text {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .en-text, .zh-text {
+            transition: opacity 0.3s ease;
+        }
+
+        body.zh-only .en-text {
+            display: none;
+        }
+
+        body.en-only .zh-text {
+            display: none;
+        }
+
+        .example-box {
+            background: #f0f8ff;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        body.dark-mode .example-box {
+            background: #1a2530;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-animation {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .loading-animation:after {
+            content: " ";
+            display: block;
+            width: 48px;
+            height: 48px;
+            margin: 6px;
+            border-radius: 50%;
+            border: 5px solid var(--primary);
+            border-color: var(--primary) transparent var(--primary) transparent;
+            animation: loading-spin 1.2s linear infinite;
+        }
+
+        @keyframes loading-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 10px;
+            animation: pulse-text 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .tts-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: white;
+            color: var(--primary);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            margin-left: 5px;
+        }
+
+        .tts-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(44, 95, 126, 0.3);
+        }
+
+        body.dark-mode .tts-btn {
+            background: #2a2a3e;
+            color: var(--text-light);
+            border-color: var(--secondary);
+        }
+
+        body.dark-mode .tts-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.1em; }
+            .card { padding: 25px; }
+            .week-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-toggle">
+        <button class="toggle-btn" onclick="toggleLanguage('both')">🌐 双语 Both</button>
+        <button class="toggle-btn" onclick="toggleLanguage('en')">🇬🇧 English</button>
+        <button class="toggle-btn" onclick="toggleLanguage('zh')">🇨🇳 中文</button>
+        <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Dark</button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>English Grammar Mastery</h1>
+            <p class="subtitle bilingual-text">
+                <span class="en-text">Interactive Learning Platform for Young Learners</span>
+                <span class="zh-text">中小学生英语语法互动学习平台</span>
+            </p>
+            <p style="margin-top: 15px; font-size: 1.1em;">
+                <span class="en-text">Designed by Professor Gong Fengqian</span>
+                <span class="zh-text">龚凤乾教授设计</span>
+            </p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showSection('curriculum')">
+                <span class="en-text">📚 Curriculum</span>
+                <span class="zh-text">📚 课程大纲</span>
+            </button>
+            <button class="tab-btn" onclick="showSection('lessons')">
+                <span class="en-text">📖 Lessons</span>
+                <span class="zh-text">📖 课程内容</span>
+            </button>
+            <button class="tab-btn" onclick="showSection('exercises')">
+                <span class="en-text">✍️ Exercises</span>
+                <span class="zh-text">✍️ 练习题</span>
+            </button>
+            <button class="tab-btn" onclick="showSection('resources')">
+                <span class="en-text">🔗 Resources</span>
+                <span class="zh-text">🔗 学习资源</span>
+            </button>
+            <button class="tab-btn" onclick="showSection('contact')">
+                <span class="en-text">📧 Contact</span>
+                <span class="zh-text">📧 联系方式</span>
+            </button>
+        </div>
+
+        <!-- AI Assistant -->
+        <div class="ai-assistant">
+            <h2 class="ai-title">
+                🤖 <span class="bilingual-text">
+                    <span class="en-text">AI Grammar Assistant (DeepSeek)</span>
+                    <span class="zh-text">AI语法助手 (DeepSeek)</span>
+                </span>
+            </h2>
+            <p class="bilingual-text">
+                <span class="en-text">Ask me anything about English grammar! Use voice or text input.</span>
+                <span class="zh-text">向我提问任何英语语法问题！支持语音或文字输入。</span>
+            </p>
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="text" id="aiInput" class="ai-input" placeholder="Type your grammar question here... / 在此输入您的语法问题...">
+                    <button class="voice-btn" onclick="startVoiceInput()">🎤 <span class="en-text">Voice</span><span class="zh-text">语音</span></button>
+                    <button class="send-btn" onclick="sendQuestion()">📤 <span class="en-text">Send</span><span class="zh-text">发送</span></button>
+                </div>
+            </div>
+            <div id="aiResponse" class="ai-response"></div>
+        </div>
+
+        <!-- Curriculum Section -->
+        <div id="curriculum" class="content-section active">
+            <div class="card">
+                <h2 class="bilingual-text">
+                    <span class="en-text">12-Week Comprehensive Grammar Curriculum</span>
+                    <span class="zh-text">12周综合语法课程大纲</span>
+                    <button class="speak-btn" onclick="speakText('12 Week Comprehensive Grammar Curriculum. 12周综合语法课程大纲')">🔊</button>
+                </h2>
+                <p class="bilingual-text">
+                    <span class="en-text">A systematic approach covering phonetics, morphology, and syntax with rich examples and interactive exercises.</span>
+                    <span class="zh-text">系统的课程设计,涵盖语音、词法和句法,配有丰富例句和互动练习。</span>
+                </p>
+
+                <div class="week-grid">
+                    <div class="week-item">
+                        <div class="week-number">Week 1 / 第1周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Introduction to English Sounds</span>
+                            <span class="zh-text">英语语音入门</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> This week, we begin our exciting journey into English phonetics. You will discover the magical world of English pronunciation, learning to distinguish between vowel and consonant sounds. We will explore how to position your mouth, tongue, and lips correctly to produce authentic English sounds.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • 20 vowel sounds (long & short)<br>
+                            • 24 consonant sounds<br>
+                            • Mouth position and articulation<br>
+                            • Minimal pairs practice</span>
+                            <span class="zh-text"><strong>导语:</strong> 本周,我们开始激动人心的英语语音学习之旅。你将发现英语发音的神奇世界,学习区分元音和辅音。我们将探索如何正确地运用口腔、舌头和嘴唇来发出地道的英语声音。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 20个元音(长元音和短元音)<br>
+                            • 24个辅音<br>
+                            • 口腔位置与发音方法<br>
+                            • 最小对立对练习</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('This week, we begin our exciting journey into English phonetics. You will discover the magical world of English pronunciation, learning to distinguish between vowel and consonant sounds. We will explore how to position your mouth, tongue, and lips correctly to produce authentic English sounds.', '本周,我们开始激动人心的英语语音学习之旅。你将发现英语发音的神奇世界,学习区分元音和辅音。我们将探索如何正确地运用口腔、舌头和嘴唇来发出地道的英语声音。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 2 / 第2周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Stress, Rhythm & Intonation</span>
+                            <span class="zh-text">重音、节奏与语调</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> Music is not only in songs—it's also in language! This week, you'll learn the rhythm and melody of English. We'll study how word stress changes meaning, how sentence rhythm creates flow, and how intonation expresses emotions.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Word stress patterns & syllables<br>
+                            • Sentence rhythm & emphasis<br>
+                            • Rising tones (questions)<br>
+                            • Falling tones (statements)</span>
+                            <span class="zh-text"><strong>导语:</strong> 音乐不仅存在于歌曲中,它也存在于语言里!本周,你将学习英语的节奏和旋律。我们将学习单词重音如何改变意义,句子节奏如何创造流畅感,以及语调如何表达情感。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 单词重音模式与音节<br>
+                            • 句子节奏与强调<br>
+                            • 升调(疑问句)<br>
+                            • 降调(陈述句)</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('Music is not only in songs it is also in language! This week, you will learn the rhythm and melody of English. We will study how word stress changes meaning, how sentence rhythm creates flow, and how intonation expresses emotions.', '音乐不仅存在于歌曲中,它也存在于语言里!本周,你将学习英语的节奏和旋律。我们将学习单词重音如何改变意义,句子节奏如何创造流畅感,以及语调如何表达情感。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 3 / 第3周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Nouns & Pronouns</span>
+                            <span class="zh-text">名词和代词</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> Words are the building blocks of language! This week we focus on nouns and pronouns. Nouns name everything in our world—people, places, things, and ideas. Pronouns are clever shortcuts that help us avoid repetition.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Common, proper, abstract nouns<br>
+                            • Singular & plural forms (regular/irregular)<br>
+                            • Personal pronouns (subject/object)<br>
+                            • Possessive forms</span>
+                            <span class="zh-text"><strong>导语:</strong> 单词是语言的基石!本周我们专注于名词和代词。名词为我们世界中的一切命名——人、地点、事物和想法。代词是帮助我们避免重复的巧妙捷径。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 普通名词、专有名词、抽象名词<br>
+                            • 单复数形式(规则/不规则)<br>
+                            • 人称代词(主格/宾格)<br>
+                            • 所有格形式</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('Words are the building blocks of language! This week we focus on nouns and pronouns. Nouns name everything in our world people, places, things, and ideas. Pronouns are clever shortcuts that help us avoid repetition.', '单词是语言的基石!本周我们专注于名词和代词。名词为我们世界中的一切命名 人、地点、事物和想法。代词是帮助我们避免重复的巧妙捷径。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 4 / 第4周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Verbs & Tenses (Part 1)</span>
+                            <span class="zh-text">动词和时态(上)</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> Action! Verbs are the heart of every sentence. This week begins our journey through English tenses. We'll start with simple present (habits and facts) and simple past (completed actions), plus learn the difference between action and state verbs.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Simple present tense<br>
+                            • Simple past tense & irregular verbs<br>
+                            • Action verbs vs. state verbs<br>
+                            • Time expressions</span>
+                            <span class="zh-text"><strong>导语:</strong> 行动起来!动词是每个句子的心脏。本周开始我们的英语时态学习之旅。我们将从一般现在时(习惯和事实)和一般过去时(已完成的动作)开始,并学习动作动词和状态动词的区别。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 一般现在时<br>
+                            • 一般过去时与不规则动词<br>
+                            • 动作动词vs状态动词<br>
+                            • 时间表达</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('Action! Verbs are the heart of every sentence. This week begins our journey through English tenses. We will start with simple present and simple past, plus learn the difference between action and state verbs.', '行动起来!动词是每个句子的心脏。本周开始我们的英语时态学习之旅。我们将从一般现在时和一般过去时开始,并学习动作动词和状态动词的区别。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 5 / 第5周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Verbs & Tenses (Part 2)</span>
+                            <span class="zh-text">动词和时态(下)</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> This week we explore continuous (progressive) tenses! These tenses describe actions in progress—happening right now, at a specific moment in the past, or in the future. Continuous tenses make your English more dynamic and vivid.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Present continuous (am/is/are + -ing)<br>
+                            • Past continuous (was/were + -ing)<br>
+                            • Future tenses (will, going to)<br>
+                            • Time markers for each tense</span>
+                            <span class="zh-text"><strong>导语:</strong> 本周我们探索进行时态!这些时态描述正在进行的动作——现在正在发生、过去某个时刻发生或将来发生的动作。进行时态使你的英语更加生动活泼。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 现在进行时(am/is/are + -ing)<br>
+                            • 过去进行时(was/were + -ing)<br>
+                            • 将来时态(will, going to)<br>
+                            • 每种时态的时间标记</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('This week we explore continuous tenses! These tenses describe actions in progress happening right now, at a specific moment in the past, or in the future. Continuous tenses make your English more dynamic and vivid.', '本周我们探索进行时态!这些时态描述正在进行的动作 现在正在发生、过去某个时刻发生或将来发生的动作。进行时态使你的英语更加生动活泼。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 6 / 第6周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Adjectives & Adverbs</span>
+                            <span class="zh-text">形容词和副词</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> Add color and detail to your sentences! Adjectives describe nouns (the big dog, a red apple), while adverbs describe verbs, adjectives, or other adverbs (she sings beautifully, very tall). You'll master comparative and superlative forms too!<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Descriptive & possessive adjectives<br>
+                            • Comparative & superlative forms<br>
+                            • Adverbs of manner, time, place<br>
+                            • Frequency adverbs (always, never)</span>
+                            <span class="zh-text"><strong>导语:</strong> 为句子增添色彩和细节!形容词描述名词(大狗,红苹果),而副词描述动词、形容词或其他副词(她唱得很美,非常高)。你还将掌握比较级和最高级形式!<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 描述性形容词与物主形容词<br>
+                            • 比较级和最高级形式<br>
+                            • 方式、时间、地点副词<br>
+                            • 频率副词(总是、从不)</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('Add color and detail to your sentences! Adjectives describe nouns like the big dog or a red apple, while adverbs describe verbs, adjectives, or other adverbs. You will master comparative and superlative forms too!', '为句子增添色彩和细节!形容词描述名词如大狗、红苹果,而副词描述动词、形容词或其他副词。你还将掌握比较级和最高级形式!')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 7 / 第7周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Prepositions & Conjunctions</span>
+                            <span class="zh-text">介词和连词</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> The connecting words! Prepositions show relationships in space and time (on, in, at, during), while conjunctions join words, phrases, and sentences (and, but, or, because, although). These small words are essential for smooth, logical expression.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Prepositions of time, place, direction<br>
+                            • Coordinating conjunctions (and, but, or)<br>
+                            • Subordinating conjunctions (because, if)<br>
+                            • Common prepositional phrases</span>
+                            <span class="zh-text"><strong>导语:</strong> 连接词!介词显示空间和时间中的关系(在...上,在...里,在...时,在...期间),而连词连接单词、短语和句子(和、但是、或、因为、虽然)。这些小词对于流畅、有逻辑的表达至关重要。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 时间、地点、方向介词<br>
+                            • 并列连词(和、但是、或)<br>
+                            • 从属连词(因为、如果)<br>
+                            • 常见介词短语</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('The connecting words! Prepositions show relationships in space and time like on, in, at, during, while conjunctions join words, phrases, and sentences. These small words are essential for smooth, logical expression.', '连接词!介词显示空间和时间中的关系如在上、在里、在时,而连词连接单词、短语和句子。这些小词对于流畅、有逻辑的表达至关重要。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 8 / 第8周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Sentence Structure Basics</span>
+                            <span class="zh-text">句子结构基础</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> The architecture of English! Every sentence needs a subject and verb, but most follow Subject-Verb-Object (SVO) pattern. You'll learn to recognize and create statements, questions, and commands—the three main sentence types.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Subject-Verb-Object structure<br>
+                            • Simple sentence patterns<br>
+                            • Statements, questions, commands<br>
+                            • Subject-verb agreement</span>
+                            <span class="zh-text"><strong>导语:</strong> 英语的建筑学!每个句子都需要主语和动词,但大多数遵循主谓宾(SVO)模式。你将学会识别和创建陈述句、疑问句和祈使句——三种主要句型。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 主谓宾结构<br>
+                            • 简单句型<br>
+                            • 陈述句、疑问句、祈使句<br>
+                            • 主谓一致</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('The architecture of English! Every sentence needs a subject and verb, but most follow Subject Verb Object pattern. You will learn to recognize and create statements, questions, and commands the three main sentence types.', '英语的建筑学!每个句子都需要主语和动词,但大多数遵循主谓宾模式。你将学会识别和创建陈述句、疑问句和祈使句 三种主要句型。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 9 / 第9周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Questions & Negatives</span>
+                            <span class="zh-text">疑问句和否定句</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> Asking and denying! Questions gather information and show interest (Do you like pizza? Where do you live?). We'll master yes/no questions and wh-questions (who, what, where, when, why, how), plus learn to correctly form negative sentences.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Yes/No questions (Do/Does, Is/Are)<br>
+                            • Wh-questions (who, what, where, why)<br>
+                            • Negative forms (do not, does not)<br>
+                            • Question words & word order</span>
+                            <span class="zh-text"><strong>导语:</strong> 提问和否定!问题收集信息并表现兴趣(你喜欢比萨吗?你住在哪里?)。我们将掌握一般疑问句和特殊疑问句(谁、什么、哪里、何时、为什么、如何),并学会正确形成否定句。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 一般疑问句(Do/Does, Is/Are)<br>
+                            • 特殊疑问句(谁、什么、哪里、为什么)<br>
+                            • 否定形式(do not, does not)<br>
+                            • 疑问词和词序</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('Asking and denying! Questions gather information and show interest. We will master yes no questions and wh questions like who, what, where, when, why, how, plus learn to correctly form negative sentences.', '提问和否定!问题收集信息并表现兴趣。我们将掌握一般疑问句和特殊疑问句如谁、什么、哪里、何时、为什么、如何,并学会正确形成否定句。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 10 / 第10周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Compound & Complex Sentences</span>
+                            <span class="zh-text">并列句和复合句</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> Level up! Move beyond simple sentences to compound (joining independent clauses) and complex sentences (with dependent clauses). Learn to use relative pronouns (who, which, that) to create sophisticated, nuanced expressions.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Compound sentences (and, but, or, so)<br>
+                            • Complex sentences with dependent clauses<br>
+                            • Relative pronouns (who, which, that)<br>
+                            • Subordinate clause patterns</span>
+                            <span class="zh-text"><strong>导语:</strong> 升级!超越简单句,学习并列句(连接独立句子)和复合句(带从属句子)。学会使用关系代词(谁、哪个、那个)来创建复杂、微妙的表达。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 并列句(和、但是、或、所以)<br>
+                            • 带从属句子的复合句<br>
+                            • 关系代词(谁、哪个、那个)<br>
+                            • 从句模式</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('Level up! Move beyond simple sentences to compound and complex sentences. Learn to use relative pronouns like who, which, that to create sophisticated, nuanced expressions.', '升级!超越简单句,学习并列句和复合句。学会使用关系代词如谁、哪个、那个来创建复杂、微妙的表达。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 11 / 第11周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Passive Voice & Modals</span>
+                            <span class="zh-text">被动语态和情态动词</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> Two powerful concepts! Passive voice shifts focus from doer to receiver (The meal is cooked vs. The chef cooks). Modal verbs (can, must, should, may, might) express ability, necessity, possibility, permission, and advice—making your English more nuanced.<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Active vs. passive voice<br>
+                            • Forming passive (be + past participle)<br>
+                            • Modal verbs (can, must, should, may)<br>
+                            • Expressing ability, permission, advice</span>
+                            <span class="zh-text"><strong>导语:</strong> 两个强大的概念!被动语态将焦点从行为者转移到接受者(饭被做 vs. 厨师做饭)。情态动词(能、必须、应该、可能、也许)表达能力、必要性、可能性、许可和建议——使你的英语更微妙。<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 主动语态vs被动语态<br>
+                            • 形成被动语态(be + 过去分词)<br>
+                            • 情态动词(能、必须、应该、可能)<br>
+                            • 表达能力、许可、建议</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('Two powerful concepts! Passive voice shifts focus from doer to receiver. Modal verbs like can, must, should express ability, necessity, possibility, permission, and advice making your English more nuanced.', '两个强大的概念!被动语态将焦点从行为者转移到接受者。情态动词如能、必须、应该表达能力、必要性、可能性、许可和建议,使你的英语更微妙。')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+
+                    <div class="week-item">
+                        <div class="week-number">Week 12 / 第12周</div>
+                        <h3 class="week-title bilingual-text">
+                            <span class="en-text">Review & Comprehensive Practice</span>
+                            <span class="zh-text">总复习与综合练习</span>
+                        </h3>
+                        <div class="week-content bilingual-text">
+                            <span class="en-text"><strong>Introduction:</strong> The final week brings everything together! We've journeyed through phonetics, morphology, and syntax. This week reviews all major topics, reinforces weak areas, and provides comprehensive practice combining multiple grammar concepts. Demonstrate your growth!<br><br>
+                            <strong>Key Topics:</strong><br>
+                            • Integration of all 11 weeks<br>
+                            • Comprehensive cloze tests<br>
+                            • Writing & speaking practice<br>
+                            • Assessment and feedback</span>
+                            <span class="zh-text"><strong>导语:</strong> 最后一周将一切汇聚在一起!我们已经走过了语音学、词法学和句法学的旅程。本周复习所有主要主题,加强薄弱领域,并提供结合多个语法概念的综合练习。展示你的成长!<br><br>
+                            <strong>核心内容:</strong><br>
+                            • 整合所有11周内容<br>
+                            • 综合完形填空测试<br>
+                            • 写作和口语练习<br>
+                            • 评估和反馈</span>
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button class="tts-btn" onclick="speakBilingual('The final week brings everything together! We have journeyed through phonetics, morphology, and syntax. This week reviews all major topics, reinforces weak areas, and provides comprehensive practice. Demonstrate your growth!', '最后一周将一切汇聚在一起!我们已经走过了语音学、词法学和句法学的旅程。本周复习所有主要主题,加强薄弱领域,并提供综合练习。展示你的成长!')" title="Play bilingual introduction">🔊 双语播放</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lessons Section -->
+        <div id="lessons" class="content-section">
+            <div class="card">
+                <h2 class="bilingual-text">
+                    <span class="en-text">Sample Lesson: Week 3 - Nouns & Pronouns</span>
+                    <span class="zh-text">示例课程：第3周 - 名词和代词</span>
+                    <button class="speak-btn" onclick="speakText('Sample Lesson: Week 3 - Nouns and Pronouns. 示例课程：第3周 - 名词和代词')">🔊</button>
+                </h2>
+
+                <div style="margin-top: 30px;">
+                    <h3 class="bilingual-text" style="color: var(--primary); font-family: 'Poppins', sans-serif;">
+                        <span class="en-text">📌 Learning Objectives</span>
+                        <span class="zh-text">📌 学习目标</span>
+                    </h3>
+                    <ul style="margin: 20px 0; line-height: 2;">
+                        <li class="bilingual-text">
+                            <span class="en-text">Understand what nouns are and their types (common, proper, abstract, concrete)</span>
+                            <span class="zh-text">理解名词的概念及其类型（普通名词、专有名词、抽象名词、具体名词）</span>
+                            <button class="speak-btn" onclick="speakText('Understand what nouns are and their types. 理解名词的概念及其类型')">🔊</button>
+                        </li>
+                        <li class="bilingual-text">
+                            <span class="en-text">Learn singular and plural forms of nouns</span>
+                            <span class="zh-text">学习名词的单复数形式</span>
+                            <button class="speak-btn" onclick="speakText('Learn singular and plural forms of nouns. 学习名词的单复数形式')">🔊</button>
+                        </li>
+                        <li class="bilingual-text">
+                            <span class="en-text">Master personal pronouns and their usage</span>
+                            <span class="zh-text">掌握人称代词及其用法</span>
+                            <button class="speak-btn" onclick="speakText('Master personal pronouns and their usage. 掌握人称代词及其用法')">🔊</button>
+                        </li>
+                    </ul>
+
+                    <h3 class="bilingual-text" style="color: var(--primary); font-family: 'Poppins', sans-serif; margin-top: 40px;">
+                        <span class="en-text">📖 What is a Noun?</span>
+                        <span class="zh-text">📖 什么是名词？</span>
+                    </h3>
+                    <p class="bilingual-text">
+                        <span class="en-text">A noun is a word that names a person, place, thing, or idea. Nouns are the building blocks of sentences!</span>
+                        <span class="zh-text">名词是命名人、地点、事物或想法的词。名词是句子的基石！</span>
+                        <button class="speak-btn" onclick="speakText('A noun is a word that names a person, place, thing, or idea. 名词是命名人、地点、事物或想法的词。')">🔊</button>
+                    </p>
+
+                    <div class="example-box">
+                        <div class="example-title bilingual-text">
+                            <span class="en-text">✨ Examples / 例句</span>
+                        </div>
+                        <p class="bilingual-text">
+                            <span class="en-text"><strong>Person:</strong> teacher, student, Sarah, doctor</span>
+                            <span class="zh-text"><strong>人:</strong> 老师、学生、莎拉、医生</span>
+                            <button class="speak-btn" onclick="speakText('Person: teacher, student, Sarah, doctor. 人: 老师、学生、莎拉、医生')">🔊</button>
+                        </p>
+                        <p class="bilingual-text">
+                            <span class="en-text"><strong>Place:</strong> school, Beijing, park, library</span>
+                            <span class="zh-text"><strong>地点:</strong> 学校、北京、公园、图书馆</span>
+                            <button class="speak-btn" onclick="speakText('Place: school, Beijing, park, library. 地点: 学校、北京、公园、图书馆')">🔊</button>
+                        </p>
+                        <p class="bilingual-text">
+                            <span class="en-text"><strong>Thing:</strong> book, pencil, computer, apple</span>
+                            <span class="zh-text"><strong>事物:</strong> 书、铅笔、电脑、苹果</span>
+                            <button class="speak-btn" onclick="speakText('Thing: book, pencil, computer, apple. 事物: 书、铅笔、电脑、苹果')">🔊</button>
+                        </p>
+                        <p class="bilingual-text">
+                            <span class="en-text"><strong>Idea:</strong> happiness, freedom, love, courage</span>
+                            <span class="zh-text"><strong>想法:</strong> 幸福、自由、爱、勇气</span>
+                            <button class="speak-btn" onclick="speakText('Idea: happiness, freedom, love, courage. 想法: 幸福、自由、爱、勇气')">🔊</button>
+                        </p>
+                    </div>
+
+                    <h3 class="bilingual-text" style="color: var(--primary); font-family: 'Poppins', sans-serif; margin-top: 40px;">
+                        <span class="en-text">🔤 Singular and Plural Nouns</span>
+                        <span class="zh-text">🔤 名词的单复数</span>
+                    </h3>
+                    
+                    <div class="example-box">
+                        <div class="example-title bilingual-text">
+                            <span class="en-text">Regular Plurals (add -s or -es)</span>
+                            <span class="zh-text">规则复数（加 -s 或 -es）</span>
+                        </div>
+                        <ul style="line-height: 2;">
+                            <li class="bilingual-text">
+                                <span class="en-text">cat → cats | dog → dogs | book → books</span>
+                                <span class="zh-text">猫 → 猫们 | 狗 → 狗们 | 书 → 书们</span>
+                                <button class="speak-btn" onclick="speakText('cat, cats. dog, dogs. book, books.')">🔊</button>
+                            </li>
+                            <li class="bilingual-text">
+                                <span class="en-text">box → boxes | class → classes | dish → dishes</span>
+                                <span class="zh-text">盒子 → 盒子们 | 班级 → 班级们 | 盘子 → 盘子们</span>
+                                <button class="speak-btn" onclick="speakText('box, boxes. class, classes. dish, dishes.')">🔊</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title bilingual-text">
+                            <span class="en-text">Irregular Plurals</span>
+                            <span class="zh-text">不规则复数</span>
+                        </div>
+                        <ul style="line-height: 2;">
+                            <li class="bilingual-text">
+                                <span class="en-text">child → children | man → men | woman → women</span>
+                                <span class="zh-text">孩子 → 孩子们 | 男人 → 男人们 | 女人 → 女人们</span>
+                                <button class="speak-btn" onclick="speakText('child, children. man, men. woman, women.')">🔊</button>
+                            </li>
+                            <li class="bilingual-text">
+                                <span class="en-text">mouse → mice | tooth → teeth | foot → feet</span>
+                                <span class="zh-text">老鼠 → 老鼠们 | 牙齿 → 牙齿们 | 脚 → 脚们</span>
+                                <button class="speak-btn" onclick="speakText('mouse, mice. tooth, teeth. foot, feet.')">🔊</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3 class="bilingual-text" style="color: var(--primary); font-family: 'Poppins', sans-serif; margin-top: 40px;">
+                        <span class="en-text">👤 Personal Pronouns</span>
+                        <span class="zh-text">👤 人称代词</span>
+                    </h3>
+                    <p class="bilingual-text">
+                        <span class="en-text">Pronouns replace nouns to avoid repetition. Personal pronouns refer to specific people or things.</span>
+                        <span class="zh-text">代词替代名词以避免重复。人称代词指代特定的人或事物。</span>
+                        <button class="speak-btn" onclick="speakText('Pronouns replace nouns to avoid repetition. 代词替代名词以避免重复。')">🔊</button>
+                    </p>
+
+                    <div class="example-box">
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                            <tr style="background: var(--primary); color: white;">
+                                <th style="padding: 12px; border: 1px solid #ddd;">Subject</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">Object</th>
+                                <th style="padding: 12px; border: 1px solid #ddd;">中文</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">I</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">me</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">我</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">you</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">you</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">你/你们</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">he</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">him</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">他</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">she</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">her</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">她</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">we</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">us</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">我们</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">they</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">them</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">他们/她们/它们</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="example-box" style="margin-top: 20px;">
+                        <div class="example-title bilingual-text">
+                            <span class="en-text">✨ Example Sentences</span>
+                            <span class="zh-text">✨ 例句</span>
+                        </div>
+                        <p class="bilingual-text">
+                            <span class="en-text"><strong>I</strong> love reading books. <strong>Books</strong> help <strong>me</strong> learn.</span>
+                            <span class="zh-text"><strong>我</strong>喜欢读书。<strong>书籍</strong>帮助<strong>我</strong>学习。</span>
+                            <button class="speak-btn" onclick="speakText('I love reading books. Books help me learn.')">🔊</button>
+                        </p>
+                        <p class="bilingual-text">
+                            <span class="en-text"><strong>She</strong> is my teacher. I respect <strong>her</strong> very much.</span>
+                            <span class="zh-text"><strong>她</strong>是我的老师。我非常尊敬<strong>她</strong>。</span>
+                            <button class="speak-btn" onclick="speakText('She is my teacher. I respect her very much.')">🔊</button>
+                        </p>
+                        <p class="bilingual-text">
+                            <span class="en-text"><strong>They</strong> are students. <strong>We</strong> study with <strong>them</strong> every day.</span>
+                            <span class="zh-text"><strong>他们</strong>是学生。<strong>我们</strong>每天和<strong>他们</strong>一起学习。</span>
+                            <button class="speak-btn" onclick="speakText('They are students. We study with them every day.')">🔊</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercises Section -->
+        <div id="exercises" class="content-section">
+            <div class="card">
+                <h2 class="bilingual-text">
+                    <span class="en-text">Practice Exercises - Week 3</span>
+                    <span class="zh-text">练习题 - 第3周</span>
+                    <button class="speak-btn" onclick="speakText('Practice Exercises - Week 3. 练习题 - 第3周')">🔊</button>
+                </h2>
+
+                <div class="exercise-container">
+                    <h3 class="bilingual-text" style="color: var(--secondary); font-family: 'Poppins', sans-serif;">
+                        <span class="en-text">Exercise 1: Choose the Correct Form</span>
+                        <span class="zh-text">练习1：选择正确的形式</span>
+                    </h3>
+
+                    <div class="exercise-item">
+                        <div class="question bilingual-text">
+                            <span class="en-text">1. There are three ___ in the garden.</span>
+                            <span class="zh-text">1. 花园里有三___。</span>
+                            <button class="speak-btn" onclick="speakText('There are three blank in the garden.')">🔊</button>
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="checkAnswer(this, false)">A. child</div>
+                            <div class="option" onclick="checkAnswer(this, true)">B. children</div>
+                            <div class="option" onclick="checkAnswer(this, false)">C. childs</div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-item">
+                        <div class="question bilingual-text">
+                            <span class="en-text">2. ___ is my best friend.</span>
+                            <span class="zh-text">2. ___是我最好的朋友。</span>
+                            <button class="speak-btn" onclick="speakText('Blank is my best friend.')">🔊</button>
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="checkAnswer(this, false)">A. Him</div>
+                            <div class="option" onclick="checkAnswer(this, true)">B. He</div>
+                            <div class="option" onclick="checkAnswer(this, false)">C. His</div>
+                        </div>
+                    </div>
+
+                    <h3 class="bilingual-text" style="color: var(--secondary); font-family: 'Poppins', sans-serif; margin-top: 40px;">
+                        <span class="en-text">Exercise 2: Cloze Test (完形填空)</span>
+                        <span class="zh-text">练习2：完形填空</span>
+                    </h3>
+
+                    <div class="exercise-item">
+                        <div class="question bilingual-text">
+                            <span class="en-text">Fill in the blanks with the correct words:</span>
+                            <span class="zh-text">用正确的词填空：</span>
+                            <button class="speak-btn" onclick="speakText('Fill in the blanks with the correct words.')">🔊</button>
+                        </div>
+                        <div class="cloze-sentence">
+                            <p class="bilingual-text">
+                                <span class="en-text">My name is Lucy. <input type="text" class="blank" placeholder="I/Me"> am a student. <input type="text" class="blank" placeholder="I/Me"> have two <input type="text" class="blank" placeholder="brother/brothers">. <input type="text" class="blank" placeholder="They/Them"> are very kind. Every day, my mother drives <input type="text" class="blank" placeholder="we/us"> to school.</span>
+                                <span class="zh-text">我叫露西。<span style="color: var(--primary);">___</span> 是一名学生。<span style="color: var(--primary);">___</span> 有两个 <span style="color: var(--primary);">___</span>。<span style="color: var(--primary);">___</span> 非常友善。每天,我妈妈开车送 <span style="color: var(--primary);">___</span> 去学校。</span>
+                            </p>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 0.9em; color: var(--accent);" class="bilingual-text">
+                            <span class="en-text"><strong>Word bank:</strong> I, Me, brother, brothers, They, Them, we, us</span>
+                            <span class="zh-text"><strong>词库:</strong> I, Me, brother, brothers, They, Them, we, us</span>
+                        </p>
+                        <button class="send-btn" onclick="checkCloze()" style="margin-top: 15px;">
+                            <span class="en-text">Check Answers</span>
+                            <span class="zh-text">检查答案</span>
+                        </button>
+                    </div>
+
+                    <h3 class="bilingual-text" style="color: var(--secondary); font-family: 'Poppins', sans-serif; margin-top: 40px;">
+                        <span class="en-text">Exercise 3: Sentence Construction</span>
+                        <span class="zh-text">练习3：造句</span>
+                    </h3>
+
+                    <div class="exercise-item">
+                        <div class="question bilingual-text">
+                            <span class="en-text">Create sentences using these words:</span>
+                            <span class="zh-text">使用这些词造句：</span>
+                        </div>
+                        <p class="bilingual-text">
+                            <span class="en-text">1. (teacher / she / English) → _____________________</span>
+                            <span class="zh-text">1. (老师 / 她 / 英语) → _____________________</span>
+                        </p>
+                        <p class="bilingual-text">
+                            <span class="en-text">2. (books / library / many) → _____________________</span>
+                            <span class="zh-text">2. (书 / 图书馆 / 很多) → _____________________</span>
+                        </p>
+                        <p class="bilingual-text">
+                            <span class="en-text">3. (we / friends / them) → _____________________</span>
+                            <span class="zh-text">3. (我们 / 朋友 / 他们) → _____________________</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div id="resources" class="content-section">
+            <div class="card">
+                <h2 class="bilingual-text">
+                    <span class="en-text">Essential Learning Resources</span>
+                    <span class="zh-text">必备学习资源</span>
+                    <button class="speak-btn" onclick="speakText('Essential Learning Resources. 必备学习资源')">🔊</button>
+                </h2>
+                <p class="bilingual-text">
+                    <span class="en-text">Curated resources to enhance your English grammar learning journey.</span>
+                    <span class="zh-text">精选资源,提升您的英语语法学习之旅。</span>
+                </p>
+
+                <div class="resource-grid">
+                    <a href="https://www.bbc.co.uk/learningenglish" target="_blank" class="resource-card">
+                        <div class="resource-title">📻 BBC Learning English</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">Comprehensive English learning with audio, video, and interactive lessons</span>
+                            <span class="zh-text">全面的英语学习资源,包含音频、视频和互动课程</span>
+                        </div>
+                    </a>
+
+                    <a href="https://dictionary.cambridge.org/" target="_blank" class="resource-card">
+                        <div class="resource-title">📖 Cambridge Dictionary</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">Authoritative dictionary with pronunciation, examples, and translations</span>
+                            <span class="zh-text">权威词典,提供发音、例句和翻译</span>
+                        </div>
+                    </a>
+
+                    <a href="https://learnenglishkids.britishcouncil.org/" target="_blank" class="resource-card">
+                        <div class="resource-title">🎨 British Council Kids</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">Fun games, songs, and stories designed for young learners</span>
+                            <span class="zh-text">专为儿童设计的趣味游戏、歌曲和故事</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.merriam-webster.com/" target="_blank" class="resource-card">
+                        <div class="resource-title">📚 Merriam-Webster</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">America's most trusted dictionary with word games and quizzes</span>
+                            <span class="zh-text">美国最值得信赖的词典,包含文字游戏和测验</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.vocabulary.com/" target="_blank" class="resource-card">
+                        <div class="resource-title">💡 Vocabulary.com</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">Adaptive learning platform for vocabulary building</span>
+                            <span class="zh-text">自适应词汇学习平台</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.collinsdictionary.com/" target="_blank" class="resource-card">
+                        <div class="resource-title">📕 Collins Dictionary</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">Comprehensive English dictionary with grammar guides</span>
+                            <span class="zh-text">全面的英语词典,附带语法指南</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.dictionary.com/" target="_blank" class="resource-card">
+                        <div class="resource-title">🔍 Dictionary.com</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">Free online dictionary and thesaurus with word origins</span>
+                            <span class="zh-text">免费在线词典和同义词词典,包含词源</span>
+                        </div>
+                    </a>
+
+                    <a href="https://baike.baidu.com/item/%E9%BE%9A%E5%87%A4%E4%B9%BE/18875898" target="_blank" class="resource-card">
+                        <div class="resource-title">👨‍🏫 Professor Gong's Profile</div>
+                        <div class="resource-desc bilingual-text">
+                            <span class="en-text">Learn more about Professor Gong Fengqian (Baidu Encyclopedia)</span>
+                            <span class="zh-text">了解更多关于龚凤乾教授的信息(百度百科)</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="content-section">
+            <div class="contact-info">
+                <h2 class="contact-title bilingual-text">
+                    <span class="en-text">Contact Professor Gong</span>
+                    <span class="zh-text">联系龚教授</span>
+                </h2>
+                <div class="contact-details">
+                    <p class="bilingual-text">
+                        <span class="en-text">📧 Email:</span>
+                        <span class="zh-text">📧 邮箱:</span>
+                        <br>
+                        <a href="/cdn-cgi/l/email-protection#a7c0c8c9c0c1c2c9c0d6cec6c99fe7c0cac6cecb89c4c8ca" style="font-size: 1.1em; letter-spacing: 0.5px;"><span class="__cf_email__" data-cfemail="6c0b03020b0a09020b1d050d02542c0b010d0500420f0301">[email&#160;protected]</span></a>
+                    </p>
+                    <p class="bilingual-text">
+                        <span class="en-text">🌐 Baidu Profile:</span>
+                        <span class="zh-text">🌐 百度百科:</span>
+                        <a href="https://baike.baidu.com/item/%E9%BE%9A%E5%87%A4%E4%B9%BE/18875898" target="_blank">龚凤乾教授</a>
+                    </p>
+                    <p style="margin-top: 30px;" class="bilingual-text">
+                        <span class="en-text">Feel free to reach out for questions, feedback, or collaboration opportunities!</span>
+                        <span class="zh-text">欢迎联系我咨询问题、提供反馈或探讨合作机会！</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        let currentLanguage = 'both';
+        let isDarkMode = false;
+        let isListening = false;
+        let recognition;
+
+        // Track currently speaking lang to support toggle-stop
+        let _currentSpeakingLang = null;
+
+        // Speak text: removes symbols, emojis, punctuation for clean reading
+        // Second click on same lang stops playback; click on different lang switches.
+        function speakText(text, lang = 'en') {
+            if ('speechSynthesis' in window) {
+                if (window.speechSynthesis.speaking && _currentSpeakingLang === lang) {
+                    window.speechSynthesis.cancel();
+                    _currentSpeakingLang = null;
+                    return;
+                }
+                window.speechSynthesis.cancel();
+                const cleanText = text.replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim();
+                if (!cleanText) return;
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = lang === 'zh' ? 'zh-CN' : 'en-GB';
+                utterance.rate = lang === 'zh' ? 0.85 : 0.72;
+                utterance.pitch = 1.0;
+                utterance.onend = function() { _currentSpeakingLang = null; };
+                utterance.onerror = function() { _currentSpeakingLang = null; };
+                _currentSpeakingLang = lang;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('Text-to-speech is not supported in your browser. / 您的浏览器不支持语音合成。');
+            }
+        }
+
+        // Speak bilingual text - English then Chinese
+        function speakBilingual(enText, zhText) {
+            if ('speechSynthesis' in window) {
+                if (window.speechSynthesis.speaking && _currentSpeakingLang === 'bilingual') {
+                    window.speechSynthesis.cancel();
+                    _currentSpeakingLang = null;
+                    return;
+                }
+                window.speechSynthesis.cancel();
+                _currentSpeakingLang = 'bilingual';
+                const cleanEn = enText.replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim();
+                const utteranceEn = new SpeechSynthesisUtterance(cleanEn);
+                utteranceEn.lang = 'en-GB';
+                utteranceEn.rate = 0.72;
+                utteranceEn.pitch = 1.0;
+                utteranceEn.onend = function() {
+                    const cleanZh = zhText.replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim();
+                    const utteranceZh = new SpeechSynthesisUtterance(cleanZh);
+                    utteranceZh.lang = 'zh-CN';
+                    utteranceZh.rate = 0.85;
+                    utteranceZh.pitch = 1.0;
+                    utteranceZh.onend = function() { _currentSpeakingLang = null; };
+                    utteranceZh.onerror = function() { _currentSpeakingLang = null; };
+                    window.speechSynthesis.speak(utteranceZh);
+                };
+                window.speechSynthesis.speak(utteranceEn);
+            } else {
+                alert('Text-to-speech is not supported in your browser. / 您的浏览器不支持语音合成。');
+            }
+        }
+
+        function toggleLanguage(lang) {
+            currentLanguage = lang;
+            document.body.classList.remove('en-only', 'zh-only');
+            
+            if (lang === 'en') {
+                document.body.classList.add('en-only');
+            } else if (lang === 'zh') {
+                document.body.classList.add('zh-only');
+            }
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            // Find the clicked button
+            const buttons = document.querySelectorAll('.tab-btn');
+            for (let btn of buttons) {
+                if (btn.textContent.includes(sectionId === 'curriculum' ? 'Curriculum' :
+                    sectionId === 'lessons' ? 'Lessons' :
+                    sectionId === 'exercises' ? 'Exercises' :
+                    sectionId === 'resources' ? 'Resources' : 'Contact')) {
+                    btn.classList.add('active');
+                    break;
+                }
+            }
+        }
+
+        // Initialize Speech Recognition
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('aiInput').value = transcript;
+                isListening = false;
+            };
+
+            recognition.onerror = function() {
+                isListening = false;
+                alert('Voice recognition error. Please try again. / 语音识别错误,请重试。');
+            };
+        }
+
+        function startVoiceInput() {
+            if (!recognition) {
+                alert('Voice recognition is not supported in your browser. / 您的浏览器不支持语音识别。');
+                return;
+            }
+
+            if (!isListening) {
+                recognition.start();
+                isListening = true;
+            }
+        }
+
+        // Speak AI response with selected language
+        function speakAIResponse(lang) {
+            const responseText = document.getElementById('aiResponseText');
+            if (responseText) {
+                speakText(responseText.innerText, lang);
+            }
+        }
+
+        // Real AI function using DeepSeek (via Netlify function)
+        async function sendQuestion() {
+            const input = document.getElementById('aiInput');
+            const question = input.value.trim();
+            
+            if (!question) {
+                alert('Please enter a question. / 请输入问题。');
+                return;
+            }
+
+            const responseDiv = document.getElementById('aiResponse');
+            responseDiv.style.display = 'block';
+            responseDiv.innerHTML = `
+                <div class="loading-animation"></div>
+                <div class="loading-text">
+                    <span class="en-text">AI is thinking...</span>
+                    <span class="zh-text">AI正在思考中...</span>
+                </div>
+            `;
+
+            try {
+                const res = await fetch('/.netlify/functions/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: question })
+                });
+                const data = await res.json();
+                if (data.reply) {
+                    responseDiv.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                            <strong style="color: var(--primary);">AI Assistant (DeepSeek):</strong>
+                            <div>
+                                <button onclick="speakAIResponse('en')" class="tts-btn" title="Read in English / 英文朗读">🔊 EN</button>
+                                <button onclick="speakAIResponse('zh')" class="tts-btn" title="Read in Chinese / 中文朗读">🔊 ZH</button>
+                            </div>
+                        </div>
+                        <div id="aiResponseText">${data.reply}</div>
+                    `;
+                } else {
+                    responseDiv.innerHTML = `<strong style="color: var(--primary);">Error:</strong> ${data.error || 'Unknown error'}`;
+                }
+            } catch (err) {
+                responseDiv.innerHTML = `<strong style="color: var(--primary);">Network Error:</strong> Could not reach AI service.`;
+            }
+        }
+
+        function checkAnswer(element, isCorrect) {
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            if (isCorrect) {
+                element.style.background = '#4CAF50';
+                element.style.color = 'white';
+                element.style.borderColor = '#4CAF50';
+                setTimeout(() => {
+                    alert('Correct! Well done! / 正确！做得好！');
+                }, 300);
+            } else {
+                element.style.background = '#f44336';
+                element.style.color = 'white';
+                element.style.borderColor = '#f44336';
+                setTimeout(() => {
+                    alert('Not quite. Try again! / 不太对。再试试！');
+                    options.forEach(opt => {
+                        opt.style.pointerEvents = 'auto';
+                        opt.style.background = '';
+                        opt.style.color = '';
+                        opt.style.borderColor = '';
+                    });
+                }, 1000);
+            }
+        }
+
+        function checkCloze() {
+            const correctAnswers = ['I', 'I', 'brothers', 'They', 'us'];
+            const inputs = document.querySelectorAll('.cloze-sentence input');
+            let allCorrect = true;
+
+            inputs.forEach((input, index) => {
+                if (input.value.trim().toLowerCase() === correctAnswers[index].toLowerCase()) {
+                    input.style.borderColor = '#4CAF50';
+                    input.style.background = '#e8f5e9';
+                } else {
+                    input.style.borderColor = '#f44336';
+                    input.style.background = '#ffebee';
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                alert('Perfect! All answers are correct! / 完美！所有答案都正确！');
+            } else {
+                alert('Some answers need correction. Red borders show incorrect answers. / 有些答案需要修正。红色边框表示错误答案。');
+            }
+        }
+
+        // Add Enter key support for AI input
+        document.addEventListener("DOMContentLoaded", function() {
+            const aiInput = document.getElementById("aiInput");
+            if (aiInput) {
+                aiInput.addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        sendQuestion();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
